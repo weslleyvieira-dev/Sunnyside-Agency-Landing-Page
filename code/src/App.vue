@@ -23,7 +23,7 @@ function scrollToSection(id) {
         <li>
           <a @click.prevent="scrollToSection('projects')">Projects</a>
         </li>
-        <li><button @click="scrollToSection('contacts')">Contact</button></li>
+        <li><button @click="scrollToSection('contacts')">CONTACT</button></li>
       </ul>
     </nav>
   </header>
