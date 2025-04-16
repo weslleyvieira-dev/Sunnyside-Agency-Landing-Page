@@ -1,8 +1,21 @@
 <script setup>
+import { ref } from "vue";
+
+const isMenuOpen = ref(false);
+
+function toggleMenu() {
+  isMenuOpen.value = !isMenuOpen.value;
+}
+
+function closeMenu() {
+  isMenuOpen.value = false;
+}
+
 function scrollToSection(id) {
   const section = document.getElementById(id);
   if (section) {
     section.scrollIntoView({ behavior: "smooth" });
+    closeMenu();
   }
 }
 </script>
@@ -13,7 +26,10 @@ function scrollToSection(id) {
       <div class="logo">
         <img src="./assets/images/icons/logo.svg" alt="Sunnyside Logo" />
       </div>
-      <ul class="nav-links">
+      <a class="menu-hamburger" @click="toggleMenu">
+        <img src="./assets/images/icons/icon-hamburger.svg" alt="Menu" />
+      </a>
+      <ul class="nav-links" :class="{ 'is-open': isMenuOpen }">
         <li>
           <a @click.prevent="scrollToSection('about')">About</a>
         </li>
@@ -296,13 +312,30 @@ function scrollToSection(id) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2.5rem;
+  padding: 1.5rem 3rem;
   position: absolute;
   top: 0;
   left: 0;
   width: -webkit-fill-available;
   width: -moz-available;
   z-index: 1;
+}
+
+.logo img {
+  width: 10rem;
+}
+
+.menu-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.menu-hamburger img {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .nav-links {
@@ -314,21 +347,22 @@ function scrollToSection(id) {
 }
 
 .nav-links li a {
+  font-size: 1.2rem;
   text-decoration: none;
   color: hsl(0, 0%, 100%);
   cursor: pointer;
 }
 
 .nav-links li button {
+  display: flex;
+  align-items: center;
   font-family: "Fraunces";
   background-color: hsl(0, 0%, 100%);
   color: hsl(0, 0%, 0%);
   height: 3rem;
-  padding: 1.8rem 2.3rem;
+  padding: 1.75rem 2rem;
   border: none;
-  border-radius: 30px;
-  display: flex;
-  align-items: center;
+  border-radius: 3rem;
   cursor: pointer;
 }
 
@@ -532,6 +566,7 @@ function scrollToSection(id) {
   color: hsl(210, 4%, 67%);
   margin-bottom: 5rem;
   letter-spacing: 0.3rem;
+  text-align: center;
 }
 
 .clients-testimonials {
@@ -638,5 +673,199 @@ footer {
 
 .footer-socials img:hover {
   filter: brightness(0) invert(1);
+}
+
+@media (max-width: 1024px) {
+  /* ----- HEADER ----- */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    position: absolute;
+  }
+
+  .logo img {
+    width: 8rem;
+  }
+
+  .menu-hamburger {
+    display: block;
+  }
+
+  .menu-hamburger img {
+    width: 2rem;
+  }
+
+  .nav-links {
+    display: none;
+    gap: 2rem;
+  }
+
+  .nav-links.is-open {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 6rem;
+    right: 0;
+    background-color: hsl(0, 0%, 100%);
+    width: inherit;
+    margin: 0 1.5rem;
+    padding: 2rem;
+    height: fit-content;
+    transform: translateX(0);
+    z-index: 3;
+  }
+
+  .nav-links.is-open::before {
+    content: "";
+    position: absolute;
+    top: -25px;
+    right: 0;
+    border-left: 1.7rem solid transparent;
+    border-bottom: 1.7rem solid hsl(0, 0%, 100%);
+    z-index: 3;
+  }
+
+  .nav-links:not(.is-open) {
+    transform: translateX(100%);
+  }
+
+  .nav-links li {
+    position: relative;
+    z-index: 3;
+  }
+
+  .nav-links li a {
+    position: relative;
+    color: hsl(232, 10%, 55%);
+    z-index: 3;
+  }
+
+  .nav-links li button {
+    background-color: hsl(51, 100%, 49%);
+  }
+
+  /* ----- HERO SECTION ----- */
+  .hero-overlay {
+    top: 45%;
+    gap: 3vh;
+    width: 80%;
+    z-index: 0;
+  }
+
+  /* ----- ABOUT SECTION ----- */
+  .about {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .transform-image {
+    order: 1;
+  }
+
+  .transform-message {
+    order: 2;
+  }
+
+  .standout-image {
+    order: 3;
+  }
+
+  .standout-message {
+    order: 4;
+  }
+
+  .transform-message,
+  .standout-message {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    width: 100%;
+    padding: 2rem;
+    resize: vertical;
+    box-sizing: border-box;
+  }
+
+  .transform-message h2,
+  .standout-message h2 {
+    font-family: "Fraunces";
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: hsl(0, 0%, 0%);
+  }
+
+  .transform-message p,
+  .standout-message p {
+    margin: 0 0 1rem;
+  }
+
+  .transform-message button,
+  .standout-message button {
+    width: 40%;
+    margin: 1rem auto 2.5rem;
+  }
+
+  /* ----- SERVICES SECTION ----- */
+  .services {
+    flex-direction: column;
+  }
+
+  .graphic-service,
+  .photography-service {
+    width: 100%;
+  }
+
+  .graphic-message,
+  .photography-message {
+    padding: 0 5%;
+  }
+
+  .graphic-message h2,
+  .photography-message h2 {
+    font-size: 1.8rem;
+  }
+
+  .graphic-message p,
+  .photography-message p {
+    font-size: 1rem;
+  }
+
+  /* ----- TESTIMONIALS SECTION ----- */
+  .testimonials {
+    padding: 3rem 1.5rem;
+  }
+
+  .testimonials h2 {
+    font-size: 1rem;
+    margin-bottom: 4rem;
+  }
+
+  .clients-testimonials {
+    flex-direction: column;
+  }
+
+  .client {
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .client-image {
+    margin-bottom: 1rem;
+  }
+
+  .client h3 {
+    margin: 1rem 0 0;
+  }
+
+  /* ----- GALLERY SECTION ----- */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 </style>
